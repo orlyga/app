@@ -57,8 +57,7 @@ direction:rtl;
 }
 .row-fluid [class*="span"] {
   float: right;
-  margin-right: 2.127659574468085%;
-  *margin-right: 2.074468085106383%;
+ 
  
 }
 .row-fluid .offset12 {
@@ -446,9 +445,7 @@ left:0;
 .btn, .nav-tabs > li > a{
 	font-weight: bold;
 }
-#content>div {
-	padding-right:4%;
-}
+
 .icon-li {
 right: -2.142857142857143em;
 }

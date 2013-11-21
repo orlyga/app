@@ -57,35 +57,7 @@ var animateMe2 = function(targetElement, speed){
 <?php if(!$loggeduser) $hide= 'hide'; else $hide="";
 $show_list=($showList)?"":"hide";?>
 
-<nav>
-		<a href="<?php echo $this->html->url("/")?>"><?php echo $this->Html->image('logo.png',array('class'=>'logo')); ?></a>
-</a>
-<div id='menu-mygroups' style='display: inline-block'>
-		
-			 		<a style="padding:0;margin:0 " href='<?php echo $this->html->url("/groupslist") ?>'><?php echo __('My Groups')?></a>
-			 		
-		
-</div>
-		<a id="revealMenu" class="collapse-button" data-toggle="collapse" data-target=".nav-collapse">
-		 
-		</a>
-		<?php if (isset($this->back_button)){ ?>
-	 	
-        <?php }?>
-	<div class='collapse-wrapper'>
-		<div class="nav-collapse" style="min-height:100px;display:inline-block;position:absolute">
-			<ul class="block show">
-				<?php echo $this->element('menu/menu_items');?>
-				<li></li>
-			</ul>
-		</div>
-	</div>
-	 
-        
-	</div>
-</nav>
-
-<div class="nav" style='display:none'>
+<div class="navbar">
 	<div class="navbar-inner">
 		<div class="container" style="padding-left:2%;padding-right:2%">
          <?php if (isset($this->back_button)){ ?>
@@ -101,12 +73,14 @@ $show_list=($showList)?"":"hide";?>
 		  <span class="icon-bar"></span>
 		  <span class="icon-bar"></span>
 		</a>
-		
+		<?php echo $this->element('menu/menu_items');?>
 <?php  if (!empty($loggeduser)) {?>
 				 <div id='user-logged-name' class=" text-bold-light "><?php echo __("Hi,")." ".  $loggeduser; ?></div>
 <?php }?>
 </div>
-     
+     <div id="bookmark_chrom"  style="position: absolute;width:20px;left: 5%; top: 5%">
+              <?php echo $this->element('android_bookmark');?>
+          </div>
     </div>
 
 </div>

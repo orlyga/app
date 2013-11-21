@@ -22,7 +22,7 @@
 /**
  * CakePHP Debug Level:
  *
- * Production Mode:
+ * Production Modechache:
  * 	0: No error messages, errors, or warnings shown. Flash messages redirect.
  *
  * Development Mode:
@@ -32,9 +32,8 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-define('HOST_NAME', 'http://localhost/kshurim/');
+define('HOST_NAME', 'http://be-member.ccc-cloud.com/');
 Configure::write('debug', 2);
-define('DEBUG_DEEP',false);
 
 /**
  * Configure the Error handler used to handle errors for your application.  By default
@@ -136,8 +135,9 @@ Configure::write('Cache.check', false);
  * differentiating error logging and debugging. Currently PHP supports LOG_DEBUG.
  */
 //define('LOG_ERROR', LOG_ERR);
-define('LOG_ERROR', 2);
-
+define('LOG_ERROR', 0);
+define('DEBUG_DEEP',false);
+//define('LANG',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 /**
  * Session configuration.
  *
@@ -306,11 +306,11 @@ Configure::write('Cache.defaultEngine', $engine);
 // In development mode, caches should expire quickly.
 $duration = '+999 days';
 if (Configure::read('debug') >= 1) {
-	$duration = '+10 seconds';
+	//$duration = '+10 seconds';
 }
 
 // Prefix each application on the same server with a different string, to avoid Memcache and APC conflicts.
-$prefix = 'croogo_';
+$prefix = 'member_';
 Configure::write('Cache.defaultPrefix', $prefix);
 
 /**
@@ -338,6 +338,7 @@ Cache::config('_cake_model_', array(
 ));
 Cache::config('groups_view', array(
 	'engine' => $engine,
+    'prefix' => $prefix ,
 		'path' => CACHE . 'views' . DS,
 	'serialize' => ($engine === 'File'),
 	'duration' => '+999 days'

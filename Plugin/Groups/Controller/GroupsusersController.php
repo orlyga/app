@@ -36,8 +36,6 @@ class GroupsusersController extends GroupsAppController {
 	
 
 function GroupsUserList($user_id=null){
-	//I think deprecated function??
-	cakeLog::write('debug','GroupsUserList in GroupsUser controller is in use');
 	if(empty($user_id)) {
 		$user_id=$this->Auth->User('id');
 		if (empty($user_id)){
@@ -65,7 +63,7 @@ function GroupsUserList($user_id=null){
 	$session=date("Gisu");
 	$this->Session->write('Session_key',$session);
 	$this->set(compact('groups','session'));
-	
+	$this->render("list");
 }
 //is used also when importing groups
 

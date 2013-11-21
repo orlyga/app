@@ -24,12 +24,9 @@
 			echo $this->Meta->meta();
 			echo $this->fetch('meta');
 			echo $this->Layout->feed();
-			echo $this->Html->css('core');
-			echo $this->Html->css('bootstrap');
-			//echo $this->Html->css('add2home');
-			echo $this->Html->css('bootstrap-responsive');
-						echo $this->Html->css('chui.win');
-			
+			echo $this->Html->css('bootstrap.min');
+			echo $this->Html->css('add2home');
+			echo $this->Html->css('bootstrap-responsive.min');
 			echo $this->Html->css('bootstrap_rtl');
 
 			echo $this->fetch('css');
@@ -40,7 +37,7 @@
 			 $ip=substr($_SERVER['HTTP_USER_AGENT'],0,2);
             if (strcmp($ip,'iP'))
             $this->Html->script('add2home');
-			echo $this->Html->script('libs/bootstrap.min');
+			echo $this->Html->script('libs/bootstrap');
 			echo $this->Html->script("bootbox.min");
 			//echo $this->fetch('script');
 
@@ -86,9 +83,9 @@ function setinputfield(feildId,value){
 </script>
 		<div id="main-container">
 		
-			<header>
+			<div id="header" class="container">
 				<?php echo $this->element('menu/top_menu'); ?>
-			</header><!-- #header .container -->
+			</div><!-- #header .container -->
 
 			<div id="content" class="container <?php if (isset($this->print)) echo " width100"; ?>">
 
