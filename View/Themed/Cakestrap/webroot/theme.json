@@ -1,0 +1,18 @@
+{
+	"name" : "Cakestrap",
+	"description" : "twitter boostrap",
+	"screenshot" : "screenshot.png",
+
+	"author" : "Orly",
+	"authorEmail" : "or.reznik@gmail.com",
+	"authorUrl" : "http://orlyreznik.com",
+
+	"menus" : [
+		"main",
+		"footer"
+		],
+
+	"regions" : [
+		"right"
+		]
+}

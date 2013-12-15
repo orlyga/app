@@ -1,0 +1,96 @@
+{
+	"Site": {
+		"acl_plugin": "Acl",
+		"email": "contact@be-member.com",
+		"feed_url": "",
+		"locale": "iw",
+		"status": 1,
+		"tagline": "",
+		"theme": "Cakestrap",
+		"timezone": 0,
+		"title": "Be-member"
+	},
+	"Hook": {
+		"bootstraps": "Settings,Comments,Contacts,Nodes,Meta,Menus,Users,Blocks,Taxonomy,Wysiwyg,FileManager,Groups,Ckeditor,Translate"
+	},
+	"Access Control": {
+		"autoLoginDuration": "+1 year",
+		"models": "\"\"",
+		"multiRole": 0,
+		"rowLevel": 0
+	},
+	"Comment": {
+		"date_time_format": "M d, Y",
+		"email_notification": 1,
+		"feed_limit": 10,
+		"level": 1
+	},
+	"Croogo": {
+		"installed": 1,
+		"version": "1.5.2"
+	},
+	"Meta": {
+		"description": "\u05d1\u05e0\u05d9\u05d9\u05d4 \u05e7\u05dc\u05d4 \u05d5\u05de\u05d4\u05d9\u05e8\u05d4 \u05e9\u05dc \u05d3\u05e3 \u05e7\u05e9\u05e8 \u05db\u05d9\u05ea\u05ea\u05d9/\u05d2\u05e0\u05d9, \u05d7\u05d9\u05e0\u05de\u05d9, \u05db\u05d5\u05dc\u05dc \u05d0\u05d1\u05d8\u05d7\u05ea \u05d4\u05de\u05d9\u05d3\u05e2, \u05d5\u05e4\u05e2\u05d5\u05dc\u05d5\u05ea \u05e8\u05d1\u05d5\u05ea \u05db\u05d2\u05d5\u05df \u05e0\u05d9\u05d4\u05d5\u05dc \u05d2\u05d9\u05d6\u05d1\u05e8\u05d5\u05ea, \u05de\u05d9 \u05d1\u05d5\u05d5\u05e2\u05d3, \u05e9\u05dc\u05d9\u05d7\u05ea \u05d4\u05d5\u05d3\u05e2\u05ea \u05d5\u05e7\u05d1\u05dc\u05ea\u05df \u05ea\u05d5\u05da \u05db\u05d3\u05d9 \u05e1\u05d9\u05e0\u05d5\u05df \u05d5\u05e2\u05d5\u05d3 ... ",
+		"generator": "Croogo - Content Management System",
+		"keywords": "\u05d3\u05e3,\u05d3\u05e4\u05d9,\u05e7\u05e9\u05e8,\u05d2\u05df ,\u05db\u05d9\u05ea\u05d4,\u05d9\u05e6\u05d9\u05e8\u05ea,\u05d1\u05e0\u05d9\u05d9\u05ea,\u05d4\u05db\u05e0\u05ea,\u05e9\u05de\u05d9\u05e8\u05ea",
+		"robots": "noindex, nofollow"
+	},
+	"Reading": {
+		"date_time_format": "D, M d Y H:i:s",
+		"nodes_per_page": 5
+	},
+	"Service": {
+		"akismet_key": "your-key",
+		"akismet_url": "http://your-blog.com",
+		"recaptcha_private_key": "your-private-key",
+		"recaptcha_public_key": "your-public-key"
+	},
+	"Writing": {
+		"wysiwyg": 1
+	},
+	"Seo": {
+		"add_copy_link": 1,
+		"add_copy_link_ga_campaign_tags": 1,
+		"add_rss_ga_campaign_tags": 1,
+		"alexa_verification_key": "",
+		"bing_webmaster_tools_key": "",
+		"changefreq": "weekly",
+		"copy_link_ga_campaign_name": "CutNPaste",
+		"copy_link_ga_medium": "copylink",
+		"copy_link_text": "Read more at: {{current_page}} Copyright &copy; {{site_title}}",
+		"facebook_app_key": "",
+		"facebook_app_secret": "",
+		"facebook_link": "",
+		"google_adwords_tracking_for_messages": "",
+		"google_analytics_domain": "your-site.com",
+		"google_analytics_ua": "UA-1-XXXXXXXXX",
+		"google_places_cid": "",
+		"google_plus_cid": "",
+		"google_tag_manager": "XXXX-XXXX",
+		"google_webmaster_tools_key": "",
+		"homepage_description": "",
+		"homepage_title": "Be-member",
+		"hook_facebook": 0,
+		"hook_google": 0,
+		"hook_twitter": 0,
+		"insert_meta_description": 1,
+		"insert_meta_keywords": 1,
+		"insert_meta_robots": 1,
+		"meta_robots_default": "INDEX, FOLLOW",
+		"organize_by_vocabulary": 1,
+		"priority": 0.8,
+		"remove_settings_on_deactivate": "NO",
+		"rss_after": "",
+		"rss_before": "",
+		"rss_ga_campaign_name": "RSSFeed",
+		"rss_ga_medium": "rssfeed",
+		"show_per_page_stats": 0,
+		"turn_off_promote_by_default": 1,
+		"twitter_access_token": "",
+		"twitter_access_token_secret": "",
+		"twitter_consumer_key": "",
+		"twitter_consumer_secret": "",
+		"twitter_username": "",
+		"version": 1
+	}
+}

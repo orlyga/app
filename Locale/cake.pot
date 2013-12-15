@@ -1,0 +1,384 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2013-09-11 11:50+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: lib/Cake/Console/Templates/skel/View/Errors/error400.ctp:22
+#: lib/Cake/Console/Templates/skel/View/Errors/error500.ctp:22
+msgid "Error"
+msgstr ""
+
+#: lib/Cake/Console/Templates/skel/View/Errors/error400.ctp:24
+msgid "The requested address %s was not found on this server."
+msgstr ""
+
+#: lib/Cake/Console/Templates/skel/View/Errors/error500.ctp:23
+#: lib/Cake/Error/ExceptionRenderer.php:234
+msgid "An Internal Error Has Occurred."
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:129
+msgid "Scaffold :: "
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:168;235;306
+msgid "Invalid %s"
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:223
+msgid "updated"
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:226
+msgid "saved"
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:246
+msgid "The %1$s has been %2$s"
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:257
+msgid "Please correct errors below."
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:309
+msgid "The %1$s with id: %2$s has been deleted."
+msgstr ""
+
+#: lib/Cake/Controller/Scaffold.php:312
+msgid "There was an error deleting the %1$s with id: %2$s"
+msgstr ""
+
+#: lib/Cake/Controller/Component/AuthComponent.php:378
+msgid "You are not authorized to access that location."
+msgstr ""
+
+#: lib/Cake/Error/ExceptionRenderer.php:212
+msgid "Not Found"
+msgstr ""
+
+#: lib/Cake/Model/Validator/CakeValidationSet.php:288
+msgid "This field cannot be left blank"
+msgstr ""
+
+#: lib/Cake/Network/CakeResponse.php:1236
+msgid "The requested file was not found"
+msgstr ""
+
+#: lib/Cake/Utility/CakeNumber.php:102
+msgid "%d KB"
+msgstr ""
+
+#: lib/Cake/Utility/CakeNumber.php:104
+msgid "%.2f MB"
+msgstr ""
+
+#: lib/Cake/Utility/CakeNumber.php:106
+msgid "%.2f GB"
+msgstr ""
+
+#: lib/Cake/Utility/CakeNumber.php:108
+msgid "%.2f TB"
+msgstr ""
+
+#: lib/Cake/Utility/CakeNumber.php:100
+msgid "%d Byte"
+msgid_plural "%d Bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:395
+msgid "Today, %s"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:398
+msgid "Yesterday, %s"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:401
+msgid "Tomorrow, %s"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:406
+msgid "Sunday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:407
+msgid "Monday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:408
+msgid "Tuesday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:409
+msgid "Wednesday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:410
+msgid "Thursday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:411
+msgid "Friday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:412
+msgid "Saturday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:418
+msgid "On %s %s"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:811
+msgid "just now"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:815
+msgid "on %s"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:859
+msgid "%s ago"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:878;900
+msgid "days"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:155
+msgid "abday"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:161
+msgid "day"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:167
+msgid "d_t_fmt"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:189
+msgid "abmon"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:195
+msgid "mon"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:206
+msgid "am_pm"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:213
+msgid "t_fmt_ampm"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:227
+msgid "d_fmt"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:233
+msgid "t_fmt"
+msgstr ""
+
+#: lib/Cake/Utility/CakeTime.php:837
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:840
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:843
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:846
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:849
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:852
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/Utility/CakeTime.php:855
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/Cake/View/Helper/FormHelper.php:690
+msgid "Error in field %s"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:880
+#: lib/Cake/View/Scaffolds/form.ctp:49
+#: lib/Cake/View/Scaffolds/index.ctp:80;95
+#: lib/Cake/View/Scaffolds/view.ctp:67;82;193
+msgid "New %s"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:886
+#: lib/Cake/View/Scaffolds/view.ctp:55;114
+msgid "Edit %s"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:1455
+msgid "empty"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:1826
+#: lib/Cake/View/Scaffolds/form.ctp:24
+msgid "Submit"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2739
+msgid "January"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2740
+msgid "February"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2741
+msgid "March"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2742
+msgid "April"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2743
+msgid "May"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2744
+msgid "June"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2745
+msgid "July"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2746
+msgid "August"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2747
+msgid "September"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2748
+msgid "October"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2749
+msgid "November"
+msgstr ""
+
+#: lib/Cake/View/Helper/FormHelper.php:2750
+msgid "December"
+msgstr ""
+
+#: lib/Cake/View/Helper/HtmlHelper.php:751
+msgid "Home"
+msgstr ""
+
+#: lib/Cake/View/Helper/PaginatorHelper.php:607
+msgid " of "
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/form.ctp:28
+#: lib/Cake/View/Scaffolds/index.ctp:27;78
+#: lib/Cake/View/Scaffolds/view.ctp:51
+msgid "Actions"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/form.ctp:32
+#: lib/Cake/View/Scaffolds/index.ctp:52
+#: lib/Cake/View/Scaffolds/view.ctp:178
+msgid "Delete"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/form.ctp:35
+msgid "Are you sure you want to delete # %s?"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/form.ctp:38
+msgid "List"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/form.ctp:45
+#: lib/Cake/View/Scaffolds/index.ctp:88
+#: lib/Cake/View/Scaffolds/view.ctp:63;76
+msgid "List %s"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/index.ctp:49
+#: lib/Cake/View/Scaffolds/view.ctp:166
+msgid "View"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/index.ctp:50
+#: lib/Cake/View/Scaffolds/view.ctp:172
+msgid "Edit"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/index.ctp:55
+#: lib/Cake/View/Scaffolds/view.ctp:59;181
+msgid "Are you sure you want to delete"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/index.ctp:66
+msgid "Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/index.ctp:71
+msgid "previous"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/index.ctp:73
+msgid "next"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/view.ctp:21
+msgid "View %s"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/view.ctp:59
+msgid "Delete %s"
+msgstr ""
+
+#: lib/Cake/View/Scaffolds/view.ctp:97;138
+msgid "Related %s"
+msgstr ""
+

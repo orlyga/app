@@ -1,0 +1,14 @@
+{
+	"name" : "TinyMCE",
+	"description" : "Integrates TinyMCE WYSIWYG editor into Croogo",
+
+	"author" : "Paul Gardner",
+	"authorEmail" : "phpmagpie@webbedit.co.uk",
+	"authorUrl" : "http://webbedit.co.uk",
+
+	"dependencies": {
+		"plugins": [
+			"Wysiwyg"
+		]
+	}
+}
