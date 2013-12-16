@@ -134,7 +134,21 @@ class CroogoAppModel extends Model {
 		}
 		return false;
 	}
-
+    private function _deleteManyCache($format){
+       $path = $this->_File->getRealPath();
+        if(strpos($key,'*')>0) {
+            $dirs = glob($path."*");
+            $files = glob($path.$match);
+            foreach($files as $file){
+                $this->_File = null;
+		return unlink($file);
+            }
+        }
+        else {
+		$this->_File = null;
+		return unlink($path);
+        }
+    }
 /**
  * Updates multiple model records based on a set of conditions.
  *

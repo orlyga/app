@@ -37,10 +37,11 @@ CroogoRouter::connect('/invitetogroup',array('plugin' => 'groups', 'controller' 
 CroogoRouter::connect('/groups/test',array('plugin' => 'groups', 'controller' => 'groups', 'action' => 'test'));
 CroogoRouter::connect('/groups/groups/view/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view'),array('pass' => array('group_id')));
 CroogoRouter::connect('/groups/view/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view'),array('pass' => array('group_id')));
+CroogoRouter::connect('/groups/view/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view'),array('pass' => array('group_id')));
 CroogoRouter::connect('/groupsview', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view'));
-CroogoRouter::connect('/groupsview/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view'),array('pass' => array('group_id')));
+CroogoRouter::connect('/viewSwitch/:group_id_session', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view'),array('pass' => array('group_id_session')));
 CroogoRouter::connect('/viewgroup', array('plugin' => 'groups','controller' => 'groups', 'action' => 'view_nouser'));
-CroogoRouter::connect('/viewgroups/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'switchGroup'),array('pass' => array('group_id')));
+CroogoRouter::connect('/view/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'switchGroup'),array('pass' => array('group_id')));
 CroogoRouter::connect('/groups/groups/edit/:group_id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'edit'),array('pass' => array('group_id')));
 CroogoRouter::connect('/groups/groups/delete/:id', array('plugin' => 'groups','controller' => 'groups', 'action' => 'delete'),array('pass' => array('id')));
 
@@ -70,4 +71,7 @@ CroogoRouter::connect('/printpreview',array('plugin'=>'file_manager','controller
 CroogoRouter::connect('/printgroup',array('plugin'=>'file_manager','controller'=>'printouts','action'=>'printgroup'));
 CroogoRouter::connect('/importgroup',array('plugin'=>'file_manager','controller'=>'imports','action'=>'importgroup'));
 
+/*Contact*/
+CroogoRouter::connect('/getContact/:email', array('plugin' => 'contacts','controller' => 'contacts', 'action' => 'checkContactExist'),array('pass' => array('email')));
+CroogoRouter::connect('/getContactChildren/:email', array('plugin' => 'contacts','controller' => 'contacts', 'action' => 'getContactChildren'),array('pass' => array('email')));
 

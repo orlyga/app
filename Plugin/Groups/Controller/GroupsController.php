@@ -184,15 +184,24 @@ var $allowedExtensions = array();
 		$group_id=$this->Session->read('noUser.Group');
 		$member_id=$this->Session->read('noUser.Member');
 		$this->GroupsUser->Member->recursion=0;
-		$contact=$this->GroupsUser->Member->read(array('Contact.name,Contact.last'),$member_id);
+		$contact=$this->GroupsUser->Member->read(array('Contact.name,Contact.last,Contact.email'),$member_id);
+		$parent=$this->GroupsUser->Member->Contact->find('first',array('conditions'=>array('email'=>$contact['Contact']['email'])));
+		$full_name_parent=false;
+		if($parent){
+		$full_name_parent= $parent['Contact']['name']." ".$parent['Contact']['last'];
+		}
 		$name=$contact['Contact']['name']." ".$contact['Contact']['last'];
+		$email_first_parent=$contact['Contact']['email'];
+		$this->request->data['User']['name']=$full_name_parent;
+		$this->request->data['User']['email']=$email_first_parent;
 		$this->Group->recursion=-1;
 		$group_name=$this->Group->read('name',$group_id);
 		$group_name=$group_name['Group']['name'];
 		$modal=true;
 		$this->Session->write('redirect',"/view/".$group_id*$group_id);
-		$this->set(compact('member_id','modal','name','group_name'));
+		$this->set(compact('member_id','modal','name','group_name','email_first_parent','full_name_parent'));
 		$this->view($group_id);
+	
 	
 	}
 	private function _switchGroup($group_id=null){
@@ -229,7 +238,8 @@ var $allowedExtensions = array();
 		}
 	
 		if (!isset($data['User']['username'])&&(!isset($data['User']['id']))){
-			$data['User']['id']=$this->Auth->user('id');
+			$user_exist=$this->Auth->user('id');
+            $data['User']['id']=$this->Auth->user('id');
 			$data['User']['username']=$this->Auth->user('username');
 		}
 	

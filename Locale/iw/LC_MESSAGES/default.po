@@ -747,7 +747,7 @@ msgstr "הוסף חבר צוות"
 
 #: Plugin/Groups/View/Members/add_child_member.ctp:66
 msgid "First Parent information"
-msgstr "עדכון פרטי הורה"
+msgstr "עדכון פרטי הורה ראשון"
 
 #: Plugin/Groups/View/Members/add_child_member.ctp:83;86
 #: Plugin/Groups/View/Members/add_member.ctp:35
@@ -4873,3 +4873,6 @@ msgstr "האם להמשיך?"
 #: Plugin/Contacts/View/Elements/form.ctp:36
 msgid "The cellphone/email is used by Family: "
 msgstr "האי מייל נמצא כבר בשימוש אצל משפחת"
+
+msgid "Select Child"
+msgstr "בחר ילד"

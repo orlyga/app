@@ -7,9 +7,9 @@
  */
 
 Croogo::hookRoutes('Groups');
-CroogoCache::config('mem_group', array_merge(
-Configure::read('Cache.defaultConfig'),
-array('groups' => array('group'))
+CroogoCache::config('croogo_groups', array_merge(
+	Configure::read('Cache.defaultConfig'),
+	array('groups' => array('groups'))
 ));
 
 CroogoNav::add('groups', array(
@@ -38,7 +38,7 @@ CroogoNav::add('groups', array(
 Croogo::mergeConfig('Wysiwyg.actions', array(
 'Groups/add' => array(
 array(
-'elements' => 'stam',
+'elements' => 'Stam',
 'preset' => 'basic',
 
 ),

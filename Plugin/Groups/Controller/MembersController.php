@@ -9,13 +9,14 @@ class MembersController extends GroupsAppController {
 	var $group=null;
 	//var $helpers = array('Js','Upload');
 	var $uses=array('Groups.GroupsUser','Groups.Member','Users.User','Contacts.Contact','Contacts.ContactsRelation');
-	var $components=array('Groups.GroupsUsers','Email','Twilio.Twilio');
+	//var $components=array('Groups.GroupsUsers','Email','Twilio.Twilio');
+    var $components=array('Groups.GroupsUsers','Email');
 	
 	public function beforeFilter() {
 
 			if((in_array($this->action,array('resend_member_invite_email','edit_child_member','edit_adult_member',"add","add_member_from_tmp_user",'add_member_admin','add_member_by_group_admin')))&&(!empty($this->request->data)))
 			$this->request->params['requested']=1;
-			$this->Auth->allow(array('resend_member_invite_email','member_group_approval','resend_member_invite_bulck','activate_member','add_member_from_tmp_user'));
+			$this->Auth->allow(array('resend_member_invite_email','member_group_approval','resend_member_invite_bulck','activate_member','add_member_from_tmp_user','test'));
 			if(!$this->Auth->checkUserLogged())
 			if(!in_array($this->params['action'],array('add_member_from_tmp_user','activate_member')))	$this->redirect('/logout');
 		if ($this->Session->check('Group.Group')) $this->group=$this->Session->read('Group.Group');		
@@ -74,16 +75,31 @@ function view($id = null) {
 	}
     }
     //routes from addMember
+     /*
+    expects:
+    $data['GroupsUser']['Member']
+                    ['Contact']
+                            >'id'
+                            >rest of contact info - if contact was changed
+                    ['member_type']
+    ['ContactsRelation'][0]
+            ['Parent']
+    ['ContactsRelation'][1]
+            ['Parent']
+    ['Contact']  
+    if contact exists allows to change infomration - like if a new photo was uploaded
+    saves contact relation info 
+    */
     function add_member_by_group_admin($member_type='child-member'){
     	$default_city=$this->GroupsUser->Group->getGroupCity($this->group);
-    	 
     	if (!empty($this->request->data)){
+            
     			//first we save the contact child/parent or contact adult
     		//if its a child
-    		$this->request->data['GroupsUser']['Member']['status']=0;
-    		$act_key=md5(uniqid());
-    		$this->request->data['GroupsUser']['Member']['activation_key']=$act_key;
-    		$this->request->data['GroupsUser']['role_id']=6;
+    		//$this->request->data['GroupsUser']['Member']['status']=0;
+    		//$act_key=md5(uniqid());
+    		//$this->request->data['GroupsUser']['Member']['activation_key']=$act_key;
+    		//$this->request->data['GroupsUser']['role_id']=6;
 			$redirect="/";
 			if(isset($this->request->data['redirect'])) {
 				$redirect=$this->request->data['redirect'];
@@ -92,8 +108,8 @@ function view($id = null) {
 					$redirect=$redirect."#staff";
 				}
 			}
-			$email=($member_type<>'child-member')? 	$this->request->data['GroupsUser']['Member']['Contact']['email']: $this->request->data['ContactsRelation']['Parent']['email'];
-    		if($this->save_member()){
+			$email=($member_type<>'child-member')? 	$this->request->data['Contact']['email']: $this->request->data['ContactsRelation'][0]['Parent']['email'];
+    		if($this->save_member($this->request->data)){
     			if(!empty($email)){
     				$template=($member_type=='child-member')?"Groups.invite_member":"Groups.invite_staff";
 	    			$group_name=$this->GroupsUser->Group->read('name',$this->group);
@@ -125,7 +141,7 @@ function view($id = null) {
     			}
     	}
     	else {
-    		$this->request->data['ContactsRelation']['Contact']['city']=$default_city;
+    		$this->request->data['ContactsRelation'][0]['Contact']['city']=$default_city;
     		
     	}
     	$this->request->data['GroupsUser']['Member']['member_type']=$member_type;
@@ -155,58 +171,53 @@ function view($id = null) {
     	   	$this->generic_add_member();
     	
     }
-    private function save_member(){
+   
+    private function save_member($data=null){
+        if(!$data) $data=$this->rquest->data;
+        $data['GroupsUser']['group_id']=$this->Session->read('Group.Group');
+
+        $data=$this->Member->save_member($data);
+        if(!$data) return FALSE;
+        $act_key=md5(uniqid());
+    	$data['GroupsUser']['Member']['activation_key']=$act_key;
+    	$data['GroupsUser']['role_id']=6;
+         $data=$this->GroupsUser->setGU($data);
+       if(!$data) {echo 'problem saving member controller'; return FALSE;}
+    }
+        /*
 	    	$return=true;
     	$redirect_anchor="";
-    	  	$data=$this->request->data;
+    	  	//$data=$this->request->data;
     	  	//update existing contact information of parent or adult member
-    	  	if(!empty($data['GroupsUser']['Member']['Contact']['id'])){
-    			$this->Contact->id=$data['GroupsUser']['Member']['Contact']['id'];
-    			if(!$this->Contact->save($this->request->data['GroupsUser']['Member']['Contact'])) {
+    	  	if(!empty($data['Contact']['id'])){
+    			$this->Contact->id=$data['Contact']['id'];
+    			if(!$this->Contact->save($this->request->data['Contact'])) {
     				$err=$this->Contact->getError();
     				$this->Session->setFlash(__($err));
     				return false;
     			}
     	  	}
     	  
-    	  if(in_array($data['GroupsUser']['Member']['member_type'],array('child-member','member'))){
-    	  	////////////////new Child/////////////////////
-    	  	if (!empty($data['ContactsRelation']['Contact']['name'])){
-    	  	//new parent and new child
-	    	  	if(empty($data['ContactsRelation']['Parent']['id']))
-	    	  			$newContact=$this->Contact->ContactsRelation->setNewContantandChild($this->request->data,true);
-	    	  	else	{
-		    	  		$this->request->data['ContactsRelation']['Contact']['parent_id']=$data['ContactsRelation']['Parent']['id'];
-		    	  		//unset($data['GroupsUser']['Member']['Contact']);
-		    	  		//A new child contact was added
-		    	  		$newContact=$this->Contact->addChildContact($this->request->data['ContactsRelation']['Contact']);
-	    	  		 
-	    	  			}
-    	  		if (is_array($newContact)){
-    	  			$return=false;
-    	  		}
-    			else {
-    				$data['GroupsUser']['Member']['contact_id']=$newContact;
-    				unset($data['GroupsUser']['Member']['Child']);
-    			}
-    		}
-    		////////////////existing Child for existing parent/////////////////////
-    		elseif (!empty($data['ContactsRelation']['Contact']['id'])){
-    			$data['GroupsUser']['Member']['contact_id']=$data['GroupsUser']['Member']['Child']['Contact']['id'];
-    			unset($data['GroupsUser']['Member']['Child']);
-    		}
-    		else {
-    			echo "error: no member selected";
-    			$return=false;
-    		}
-    	}
+    	 	if (isset($data['ContactsRelation'][0])){
+                $data['ContactsRelation'][0]['Contact']=$data['Contact'];
+                if (isset($data['ContactsRelation'][1]))
+                    $data['ContactsRelation'][1]['Contact']=$data['Contact'];
+              $data['ContactsRelation']=  $this->ContactsRelation->setContactRelations($data['ContactsRelation']);
+              $data['GroupsUser']['Member']['contact_id']=$data['ContactsRelation'][0]['Contact']['id'];
+            
+
+            $return=$this->Member->save($data['GroupsUser']['Member']);
+            pr
+            //create users ang GU for new member
+           // $this->User->
+            }
     	//////////////////for staff//////////////////////////
     	else {
     		////new contact
     		unset($data['GroupsUser']['Member']['Child']);
     		$redirect_anchor="#staff";
-    		if(empty($data['GroupsUser']['Member']['Contact']['id'])){
-    			if(!$this->Contact->save($data['GroupsUser']['Member']['Contact'])) {
+    		if(empty($data['Contact']['id'])){
+    			if(!$this->Contact->save($data['Contact'])) {
     				$err=$this->Contact->getError();
     				$this->Session->setFlash(__($err));
      				return false;
@@ -237,7 +248,7 @@ function view($id = null) {
     			return false;
     		}
     	}
-    }
+    }*/
     function add_member_from_tmp_user($tempuser){
     	if (!empty($this->request->data)){
     		$this->request->data['GroupsUser']['role_id']=6;
@@ -358,8 +369,6 @@ function view($id = null) {
     	foreach ($members as $member){
     		//we dont want to bug we send two reminders
     		if($member['Member']['status']<-2) continue;
-    		pr(date("Y-m-d"));
-    		pr(date("Y-m-d",strtotime($member['Member']['created'])));
     		$days=floor((strtotime(date("Y-m-d"))-strtotime(date("Y-m-d",strtotime($member['Member']['created']))))/(60*60*24));
     		echo $days;
     		exit;
@@ -425,6 +434,35 @@ function view($id = null) {
 	}
 
 	
-
+function test(){
+    $this->ContactsRelation->getContactChildrenByEmail('or.reznik@gmail.com');
+    exit;
+    $data=array('GroupsUser'=>array(
+            'Member'=>array(
+                    'member_type'=>'child-member'
+                    )
+             ),
+             'ContactsRelation'=>array(
+                   '0'=>array( 'Parent'=>array(
+                            'cellphone'=>'0547560532',
+                            'email'=>'or.reznik@gmail.com',
+                            'last'=>'רנזיק'
+                            )),
+                  '1'=>array(  'Parent'=> array(
+                            'cellphone'=>'0526148762',
+                            'email'=>'yanivrez@gmail.com',
+                            'last'=>'רזניק'
+                            ))
+                    ),
+                            
+            'Contact'=>array(
+                    'name'=>'ילדהחדשה',
+                    'last'=>'רזניק'
+                   )
+                  );
+                  
+                   
+    $this->save_member($data);
+}
 	
 }

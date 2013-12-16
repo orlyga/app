@@ -71,17 +71,15 @@ class AclAutoLoginComponent extends Component {
 			array($this, 'onAdminLoginSuccessful'),
 			'Controller.Users.adminLoginSuccessful'
 		);
-	$controller->getEventManager()->attach(
+		$controller->getEventManager()->attach(
 			array($this, 'onAdminLoginSuccessful'),
 			'Controller.Users.loginSuccessful'
 		);
 		$skipActions = array('logout', 'admin_logout');
-		if ((isset ($this->_Controller->dontAutoLogin))&&($this->_Controller->dontAutoLogin=='true')) return;
 		if (!in_array($controller->request->params['action'], $skipActions) &&
 			empty($controller->request->data)) {
 			$this->_loginByCookie();
 		}
-		
 	}
 
 /**
@@ -105,10 +103,8 @@ class AclAutoLoginComponent extends Component {
  */
 	protected function _verify() {
 		if (!$this->Cookie->check($this->_userModel)) {
-		
 			return array();
 		}
-		
 		$data = $this->Cookie->read($this->_userModel);
 		if (is_array($data) && !empty($data['time'])) {
 			$hash = $data['hash'];
@@ -128,7 +124,6 @@ class AclAutoLoginComponent extends Component {
  * @throws UnauthorizedException
  */
 	protected function _loginByCookie() {
-		//pr(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 		$Controller = $this->_Controller;
 		$request = $Controller->request;
 		$userId = $this->Auth->user('id');
@@ -157,7 +152,6 @@ class AclAutoLoginComponent extends Component {
 		if (strtotime($expires) === false) {
 			$expires = '+1 week';
 		}
-		$x=$request->is('post');
 		if ($request->is('post') && $remember) {
 			$data = $this->_cookie($request);
 			$this->Cookie->write($this->_userModel, $data, true, $expires);

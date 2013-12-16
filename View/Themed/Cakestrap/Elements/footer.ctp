@@ -11,5 +11,5 @@
 		</div><!-- .container -->
 	
 	</body>
- <?php //echo $this->Facebook->init(); ?>
+ <?php echo $this->Facebook->init(); ?>
 </html>

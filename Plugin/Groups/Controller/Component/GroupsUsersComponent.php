@@ -37,10 +37,28 @@ class GroupsUsersComponent extends Component {
  * @param object $controller instance of controller
  * @return void
  */
-	public function startup(Controller $controller) {
-		$this->user_id=($this->Auth->User('id'))?$this->Auth->User('id'):false;
+	public function startup(Controller $controller) { $loggedUser=false;
+		$user=false;
+		$showList=false;
+		$user_id=$this->controller->Auth->User('id');
+		if (!in_array($this->controller->action,array('logout','login'))){
+            			if($user_id<>null)
+			{ 
+                
+				$groups=$this->getUserGroups($user_id);
+				$showList=($this->controller->action=='GroupsUserList')?false:(count($groups)>1);
+				$this->controller->user_logged=true;
+				$loggedUser=$this->controller->Auth->User('name');
+				
+			}
+			else{
+				//$user=$this->Auth->user();
+			}
+		}
+		$this->controller->set('loggeduser',$loggedUser );
+		$this->controller->set('showList',$showList);
+		$this->controller->user_id=($this->controller->Auth->User('id'))?$this->Auth->User('id'):false;
 	}
-
 /**
  * beforeRender
  *

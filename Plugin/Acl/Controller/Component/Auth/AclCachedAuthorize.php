@@ -73,7 +73,7 @@ class AclCachedAuthorize extends BaseAuthorize {
 		list($plugin, $userModel) = pluginSplit($this->settings['userModel']);
 		$user = array($userModel => $user);
 		$action = $this->action($request);
-
+		if(!isset($user['User']['id'])) $user['User']['id']="";
 		$cacheName = 'permissions_' . strval($user['User']['id']);
 		if (($permissions = Cache::read($cacheName, 'permissions')) === false) {
 			$permissions = array();

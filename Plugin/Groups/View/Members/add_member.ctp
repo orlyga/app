@@ -11,7 +11,7 @@ function next_step(i){
 
 function submit_add_member(){
 	
-	if($("#ontact-form").validation())
+	if($("#contact-form").validation())
 	$("#AddMemberForm").submit();
 	
 }
@@ -25,14 +25,13 @@ function submit_add_member(){
 			if($member_type=='head-staff')	{echo '<h3>'.__('Add %s Information',__($group_vars['head_staff_type'])).'</h3>';}
 			if ($member_type=='staff') echo '<h3>'.__('Add %s Information',__('Staff')).'</h3>';
 			if ($member_type=='child-member') echo '<h3>'.__('Add %s Information',__('Member')).'</h3>';?>
-						<div id='error_adult' class='alert-error'></div>
+									<div id='error_adult' class='alert-error'></div>
 				<?php 
 				//check session for tyoe of group. different adult/staff
-				if (isset($this->request->data['GroupsUser']['Member']))
-					echo $this->element('Contacts.AddEditAdult', array('contact_type'=>$member_type,'parent'=>"GroupsUser.Member",));
+                    if (isset($this->request->data['GroupsUser']['Member']))
+					    echo $this->element('Contacts.AddEditAdult', array('contact_type'=>$member_type,'parent'=>"GroupsUser.Member",));
 					else
-					echo $this->element('Contacts.AddEditAdult', array('contact_type'=>$member_type,));
- ?>
+					    echo $this->element('Contacts.AddEditAdult', array('contact_type'=>$member_type,));?>
 					
 					<div id="button-save-no-child" >	
 						<?php echo $this->html->link(__('Save and View Group'),'javascript:submit_add_member(false)'	,array('class'=>'btn green_gradient'));?>			

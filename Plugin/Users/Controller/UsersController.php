@@ -247,7 +247,6 @@ var $allowedExtensions = array();
 					'recursive'=>-1));
 		
 			if(!empty($user)){
-
 					$this->request->params['requested']=1;
 					$this->request->data=$user;
 					$this->request->data['User']['username']=array('User.id'=>$user['User']['id']);
@@ -335,7 +334,7 @@ $ps= (isset($this->request->params['requested'])&&($this->request->params['reque
 					$this->request->data['User']['password']='temp';
 					$this->Session->setFlash(__( 'You are currently logged in as: '.$user['User']['name']), 'default', array('class' => 'success'));
 					$this->login();
-					exit;
+					return TRUE;
 		}
 		//facebook is found, but login was not done by facebook
 		else {

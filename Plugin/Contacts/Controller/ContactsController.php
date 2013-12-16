@@ -42,7 +42,7 @@ class ContactsController extends ContactsAppController {
  * @var array
  * @access public
  */
-	public $uses = array('Contacts.Contact', 'Contacts.Message','Contacts.City');
+	public $uses = array('Contacts.Contact', 'Contacts.Message','Contacts.City','Contacts.ContactsRelation');
 
 /**
  * Admin index
@@ -404,5 +404,24 @@ public function edit($id = null,$contact_type=null) {
 		$this->set(compact('cities'));
 		return $cities;
 	}
+
+    function getContactChildren($email){
+       
+        $result = $this->ContactsRelation->getContactChildrenByEmail($email);
+        if(!$result)  {echo "-1";exit;}
+         $contacts=$result['Children'];
+          $parent=$result['Parent'];
+         $secondparents=$this->ContactsRelation->getSecondParentsbyFirstParents($result['Parent']['Contact']['id']);
+
+        if ($this->RequestHandler->isAjax()){
+						$this->layout = "ajax";
+                        if (count ($contacts)> 0)
+                        {
+                            $this->set(compact('contacts','parent','secondparents'));
+                            $this->render('list');
+
+                 }
+    }
+    }
 
 }

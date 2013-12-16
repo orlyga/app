@@ -4,14 +4,13 @@ window.location="<?php echo $this->Html->url('/viewgroups')?>/"+group_id;
 }
 </script>
 
-			<div id="group-list" class="button-list span4"><ul class='list'>
+			<div id="group-list" class="button-list span4"><ul>
 
 			<?php 
 					foreach ($groups as $group){
 						?>
-						<li><a href="#" onClick="switch_group(<?php echo $group['GroupsUser']['group_id']*$session?>);return false;" class=""><h3><?php echo $group['Group']['name']?></h3></a></li>
+						<li><a href='/viewSwitch/<?php echo $group['GroupsUser']['group_id']*$group['GroupsUser']['group_id'] ?>' class="btn btn-block"><?php echo $group['Group']['name']?></a></li>
 			<?php }
 					echo '</ul>';
 					?>
 		</div>
-		

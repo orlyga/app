@@ -16,7 +16,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ========================================================== */
-
+ function get_contact($email){
+	$.ajax({
+		url:"/getContact/"+encodeURIComponent($email),
+		type : 'GET',
+        beforeSend:function (XMLHttpRequest) { $('#sending').fadeIn();},
+		 success : function(data){
+             $('#sending').fadeOut();
+             if (typeof afterGetContact == 'function')
+                  afterGetContact(data);
+                     
+		        },
+		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		            //$('#login_error').show();
+		            //ajax_failed(errorThrown);
+		            alert("error :: " + textStatus + " : " + errorThrown);
+		        }
+		    });
+}
+function get_contact_children($email){
+    if (!$email) return false;
+	$.ajax({
+		url:"/getContactChildren/"+encodeURIComponent($email),
+		type : 'GET',
+        beforeSend:function (XMLHttpRequest) { $('#sending').fadeIn();},
+		 success : function(data){
+             $('#sending').fadeOut();
+             if (typeof afterGetContactChildren == 'function')
+                  afterGetContactChildren(data);
+                     
+		        },
+		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		            //$('#login_error').show();
+		            //ajax_failed(errorThrown);
+		            alert("error :: " + textStatus + " : " + errorThrown);
+		        }
+		    });
+            }
 
 !function ($) {
 
@@ -27,6 +63,7 @@
    * ======================================================= */
 
   $(function () {
+
 
     $.support.transition = (function () {
 

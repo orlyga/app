@@ -58,7 +58,47 @@ class ContactsRelation extends ContactsAppModel {
  *
  * @var array
  */
+ /*return s
+ y
+(
+    [0] => Array
+        ( [Contact] => Array
+                (  [id] => 792
+                    [name] => נעמהה
+                    [last] => נעמהה
+                )
+          [ContactsRelation] => Array
+                ( [related_contact_id] => 791
+                )
+        )
+
+    [1] => Array
+        (            [Contact] => Array*/
+	public function getContactChildrenByEmail($email) {
+		$this->recursive=-1;
+        $query='SELECT id,last,name
+                FROM  contacts Contact
+                WHERE email =  "'.$email.'"';
+		$result = $this->query($query);
+        if ($result) {
+           
+             $query='SELECT DISTINCT Contact.id, Contact.name
+                FROM contacts Contact
+                INNER JOIN contacts_relations ContactsRelation ON ContactsRelation.contact_id = Contact.id
+                INNER JOIN contacts a ON a.id = ContactsRelation.related_contact_id
+                WHERE Contact.email =  "'.$email.'"';
+		     $result2 = $this->query($query);
+             $final=array();
+             $final['Parent']=$result[0];
+             $final['Children']=$result2;
+             
+            return $final;
+            
+
+        }
+		else return $result;
 	
+	}
 	
 	public function getContactChildren($contact_id,$one_child=false) {
 		$this->recursive=-1;
@@ -111,6 +151,18 @@ class ContactsRelation extends ContactsAppModel {
 		if( $i==1) return $results[0];
 		return $results;
 	}
+
+    function getSecondParentsbyFirstParents($contact_id){
+       $sql= "SELECT DISTINCT Contact.name,Contact.last,Contact.id
+            FROM contacts Contact
+            INNER JOIN contacts_relations ContactsRelation ON Contact.id = ContactsRelation.related_contact_id
+            INNER JOIN contacts_relations ContactsRelationFirst ON ContactsRelation.contact_id = ContactsRelationFirst.contact_id
+            AND ContactsRelation.related_contact_id <> ContactsRelationFirst.related_contact_id
+            AND ContactsRelationFirst.related_contact_id =".$contact_id;
+		$results=$this->query($sql);
+		return $results;
+	}
+
 	function getContacts($contact_id,$mem_only=false){
 		if (!$mem_only){
 			$this->recursive=1;
@@ -188,6 +240,103 @@ class ContactsRelation extends ContactsAppModel {
 		}
 		else return $data;
 	}
+//if not found even one child, returns false
+//if found child but not the specific one, returns the last child that is similiar
+//return child_id if a percise found
+function _isChildOf($contactRelations){
+    $in = "'".$contactRelations[0]['related_contact_id']."'";
+    if (!empty($contactRelations[1]['related_contact_id'])) $in .=",'".$contactRelations[1]['related_contact_id']."'";
+     $query = "select Contact.* from contacts as Contact inner join contacts_relations as CR 
+     on Contact.id = CR.contact_id where CR.related_contact_id in (".$in.")";
+    $contacts=$this->query($query);
+     $name=$contactRelations[0]['Contact']['name'];
+   if (count($contacts)>0){
+			foreach ($contacts as $onechild){
+				$lev_number=(strlen($name)<4) ? 1:3;
+				$match_name=levenshtein( $name ,$onechild['Contact']['name'] );
+				if (($match_name<=$lev_number)){
+					return $onechild['Contact']['id'];
+				}
+			}
+         return $onechild['Contact'];
+		}
+   return FALSE;
+
+}
+function setContactRelations($contactRelations){
+   
+    if (empty($contactRelations[0]['Contact']['name']) && ($contactRelations[0]['Contact']['id']))
+       {
+    			echo "error: no member selected";
+    			return false;
+    	}
+         //new parent and new child
+         //before save will check if exist, if does then return same contact structure
+        if (!isset($contactRelations[0]['related_contact_id'])){
+         $contact['Contact']=$contactRelations[0]['Parent'];
+	            $firstparentContact=$this->Contact->save($contact);
+                $contactRelations[0]['related_contact_id']=$this->Contact->id;
+                
+        }
+       $secondparentContact="";
+       $contactRelations[0]['relation_type']='first-parent';
+        if(isset($contactRelations[1])) {
+            $contact['Contact']=$contactRelations[1]['Parent'];
+            $secondparentContact=$this->Contact->save($contact);
+         
+            $contactRelations[1]['related_contact_id']=$this->Contact->id;
+            $contactRelations[1]['relation_type']='second-parent';
+            unset($contactRelations[1]['Parent']);
+       
+        }
+        if (empty($contactRelations[0]['Contact']['id'])){
+           
+            //try to find the child by parents and name
+            $child_contact_id=$this->_isChildOf($contactRelations);
+           
+            //is array if we found another child in the family
+            if(is_array($child_contact_id)) {
+                $contactRelations[0]['Contact']=array_merge ($child_contact_id,$contactRelations[0]['Contact']);
+                 return $contactRelations;
+
+                           }
+            elseif ($child_contact_id) {
+                //need to add this child
+                $contactRelations[0]['Contact']['id']= $child_contact_id;
+                return $contactRelations;
+            }
+            //need to create a child based on first parent info
+           else { 
+               //get parent info if not there
+               if(empty($contactRelations[0]['Parent']['email'])){
+                   $par=$this->Contact->read(NULL,$contactRelations[0]['related_contact_id']);
+                   unset($contactRelations[0]['Parent']);
+                  
+               }
+              // $contactRelations[0]['Parent']['id']=$contactRelations[0]['related_contact_id'];
+                  if(empty($contactRelations[0]['Contact']['email'])) $contactRelations[0]['Contact']['email']=$par['Contact']['email'];
+                   if(empty($contactRelations[0]['Contact']['phone'])) $contactRelations[0]['Contact']['phone']=$par['Contact']['phone'];
+                   if(empty($contactRelations[0]['Contact']['cellpone'])) $contactRelations[0]['Contact']['cellphone']=$par['Contact']['cellphone'];
+                   if(empty($contactRelations[0]['Contact']['address'])) $contactRelations[0]['Contact']['address']=$par['Contact']['address'];
+   
+           }
+           $con['Contact']=$contactRelations[0]['Contact'];
+           //set new contact in the relations so we can save relations
+           $ret=$this->Contact->saveAll($con);
+         //  prt($this->Contact->getInsertId());
+         //  exit;
+          if($ret){
+            $contactRelations[0]['Contact']['id']=$this->Contact->getInsertId();
+          
+            if (isset($contactRelations[1]))  $contactRelations[1]['Contact']['id']=$this->Contact->getInsertId();
+           
+            if ($this->saveAll($contactRelations,array('deep'=>true))) return $contactRelations;
+            else return FALSE;
+          }
+          else return FALSE;
+        }
+
+}
 	function setNewContantandChild($data,$check_exist=false){
 	if(!isset($data['ContactsRelation'])){
 		$tosave['ContactsRelation']['Parent']=$data['GroupsUser']['Member']['Contact'];

@@ -257,7 +257,7 @@ class Contact extends ContactsAppModel {
          }
      }
 	public function beforeSave($options = array()) {
-		// a file has been uploaded so grab the filepath
+      		// a file has been uploaded so grab the filepath
 		if (!empty($this->data[$this->alias]['filepath'])) {
 			$this->data[$this->alias]['image'] = $this->data[$this->alias]['filepath'];
 		}
@@ -265,6 +265,17 @@ class Contact extends ContactsAppModel {
 	if (!empty($this->data[$this->alias]['image']['error']) && $this->data[$this->alias]['image']['error']==4 && $this->data[$this->alias]['image']['size']==0) {
 			unset($this->data[$this->alias]['image']);
 		}
+       
+        if(empty($this->data['Contact']['id'])){
+                 $contact=$this->isContactExist(array('email'=>$this->data['Contact']['email'],'cellphone'=>$this->data['Contact']['cellphone'],'name'=>$this->data['Contact']['name'],'last'=>$this->data['Contact']['last']));
+                
+                   if($contact) {
+                       $this->id=$contact['Contact']['id'];
+                       return false;
+                   }
+                 //  return $contact;
+        }
+        
 		return parent::beforeSave($options);
 	}
 
@@ -322,25 +333,35 @@ class Contact extends ContactsAppModel {
 	function getRelatedContact($contact_id,$relation_type=null){
 		return $this->ContactsRelation->getContactsOfRelatedByContactId($contact_id,$relation_type);
 	}
+    function getParentEmail($child_contact_id){
+        $parents=$this->getRelatedContact($child_contact_id);
+        foreach ($parents as $parent){
+            if (!empty($parent['Contact']['email'])) return $parent['Contact']['email'];
+        }
+        return FALSE;
+    }
 	//$query should be field name and value sets expects name, last, email and maybe cell
 	function isContactExist($query){
-		unset($query['city']);
+
+               		unset($query['city']);
 		//this is basically used now for new contacts, not existing!!
 		$this->recursive=-1;
 		$res=$this->find('first',array(
 				'conditions'=>$query,
 				'recursive'=>-1)
 		);
+     
 		//if contact information was changed into some contact that we recognize in the system,
 		//we need to merge old contact with new if contact exists.Future version.
 		//if its a new contact, then we point it to an existing contact_id
 		if(count($res)>0) {
 			//$this->redirect(array('action'=>'edit',$res['Contact']['id'],$contact_type));
 			$res['match']='full';
+            
 			return $res;
 		}
 		//we take out the name to see if there exist email or cellphone
-		$name=$query['name'];
+		$name=(isset($query['name']))?$query['name']:null;
 		$last=$query['last'];
 		unset($query['name']);
 		unset($query['last']);
@@ -351,16 +372,20 @@ class Contact extends ContactsAppModel {
 		);
 		//
 		if(count($res)>0) {
-			$lev_number=(strlen($name)<4) ? 1:3;
 			$match_last=levenshtein( $last ,$res['Contact']['last'] );
-			$match_name=levenshtein( $name ,$res['Contact']['name'] );
-			if (($match_name<=$lev_number)&&($match_last<=2)){
+            $match_name_ind=TRUE;
+			if ($name<>null){
+                 $lev_number=(strlen($name)<4) ? 1:3;
+                $match_name=levenshtein( $name ,$res['Contact']['name'] );
+                 $match_name_ind=($match_name<=$lev_number);
+             }
+			if ( $match_name_ind&&($match_last<=2)){
 			$res['match']='partial';
 			return $res;
 			}
 		}
 		return false;
-		exit;
+		
 		
 
 	}

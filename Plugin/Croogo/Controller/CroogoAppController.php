@@ -31,11 +31,10 @@ class CroogoAppController extends Controller {
 		'Cookie',
 		'Auth' => array(
 					'authenticate' => array(
-							
-							'Acl.Cookie',
+                    'Acl.Cookie',
 							'Form' => array(
 									'fields' => array('username' => 'email')
-							),
+							)
 					),
 					'authorize' => 'Controller'
 			),
@@ -193,26 +192,6 @@ class CroogoAppController extends Controller {
 			Configure::write('Config.language', $this->request->params['locale']);
 		}
 		//added orly to serve showing user name in all pages header Hi, <$loggedUser>
-		$loggedUser=false;
-		$user=false;
-		$showList=false;
-		$user_id=$this->Auth->User('id');
-		if (!in_array($this->action,array('logout'))){
-            			if($user_id<>null)
-			{ 
-				$groups=$this->GroupsUsers->getUserGroups($this->Auth->User('id'));
-				$showList=($this->action=='GroupsUserList')?false:(count($groups)>1);
-				$this->user_logged=true;
-				$loggedUser=$this->Auth->User('name');
-				
-			}
-			else{
-				//$user=$this->Auth->user();
-			}
-		}
-		$this->set('loggeduser',$loggedUser );
-		$this->set('showList',$showList);
-		
 	}
 
 /**

@@ -202,10 +202,24 @@ class User extends UsersAppModel {
  * @return boolean
  */
 	public function beforeSave($options = array()) {
+		
+        if((empty ($this->data['User']['username']))&& (!empty($this->data['User']['contact_id']))){
+            $user=$this->findByContactId($this->data['User']['contact_id']);
+            if ($user) return $user;
+            $contact=$this->Contact->read(null,$this->data['User']['contact_id']);
+            $this->data['User']['username']=(isset($contact['Contact']['email']))?$contact['Contact']['email']:$contact['Contact']['cellphone'];
+             if(empty($this->data['User']['username'])) $this->data['User']['username']=$this->Contact->getParentEmail($this->data['User']['contact_id']);
+            $this->data['User']['name'] = $contact['Contact']['name'] ." ".$contact['Contact']['last'];
+            $this->data['User']['password']=substr($contact['Contact']['email'],6);
+            $this->data['User']['role_id']=2; 
+            $this->data['User']['email']=(isset($contact['Contact']['email']))?$contact['Contact']['email']:null;
+            $this->data['User']['status']=1;
+          
+        }
 		if (!empty($this->data['User']['password'])) {
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
 		}
-		return true;
+        return true;
 	}
 
 /**

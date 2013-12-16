@@ -26,46 +26,45 @@ class GroupsusersController extends GroupsAppController {
             if($this->Session->check('Group.Group'))
 			    $this->group=$this->Session->read('Group.Group');
             parent::beforeFilter();
-		if(!$this->user_logged){
+		//if(!$this->user_logged){
 			
-					if ($this->params['action']=='GroupsUserList') {$this->redirect('/home-page');}
-					if(!in_array($this->params['action'],array('importgroup','invite')))	$this->redirect('/home-page');
-		}
+				//	if ($this->params['action']=='GroupsUserList') {$this->redirect('/home-page');}
+				//	if(!in_array($this->params['action'],array('importgroup','invite')))	$this->redirect('/home-page');
+	//	}
 		
 	}
 	
 
 function GroupsUserList($user_id=null){
-	if(empty($user_id)) {
+		if(empty($user_id)){
 		$user_id=$this->Auth->User('id');
-		if (empty($user_id)){
-			$is_log=$this->Auth->checkUserLogged();
-			if($is_log) $user_id=$this->Auth->User('id');
-			else return false;
-		}
-	}
-	
-	//if(empty($user_id))
-	//	$user_id=$this->Auth->User('id');
-//	if (empty($user_id)) return false;
-	if($this->Session->check('noUser.Group')){
+
+	            if (empty($user_id)) {
+                    $is_log=$this->Auth->checkUserLogged();
+			            if($is_log) $user_id=$this->Auth->User('id');
+                        else return false;
+                }
+        }
+    	if($this->Session->check('noUser.Group')){
 		$group=$this->Session->read('noUser.Group');
 		$this->Session->delete('noUser.Group');
 		$this->redirect('/groups/view/'.$group);
 	}
 	$groups=$this->GroupsUser->getGroupsByUser($user_id);
+
 	if (count($groups)==1){
+      
 	if(isset($groups[0])) $groups=$groups[0];
-		$this->Session->write('Group.Group',$groups['GroupsUser']['group_id']);
-		$this->redirect('/groupsview/');
+        $group_id=$groups['GroupsUser']['group_id'];
+		$this->Session->write('Group.Group',$groups_id);
+		$this->redirect('/view/'.$group_id*$group_id);
 	}
 	if(count($groups)==0) {$this->redirect('/home-page');}
+	
 	$session=date("Gisu");
 	$this->Session->write('Session_key',$session);
 	$this->set(compact('groups','session'));
-	$this->render("list");
-}
-//is used also when importing groups
+	}
 
 function delete_member($member_id){
 if (!$member_id) {

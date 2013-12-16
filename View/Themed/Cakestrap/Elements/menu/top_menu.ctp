@@ -5,7 +5,7 @@
         $("#div-is-logged").removeClass('hide');
     }
 
-   var animateMe = function(targetElement, speed){
+ /*  var animateMe = function(targetElement, speed){
     $(targetElement).css({'width':'20px','margin-left':'-10px','margin-top':'-10px'});
      $(targetElement).animate(
         {
@@ -38,7 +38,7 @@ var animateMe2 = function(targetElement, speed){
         }
     );
     
-};
+};*/
     function is_login_needed() {
         return $("#div-is-logged").hasClass('hide');
     }
@@ -79,7 +79,7 @@ $show_list=($showList)?"":"hide";?>
 <?php }?>
 </div>
      <div id="bookmark_chrom"  style="position: absolute;width:20px;left: 5%; top: 5%">
-              <?php echo $this->element('android_bookmark');?>
+              <?php //echo $this->element('android_bookmark');?>
           </div>
     </div>
 

@@ -530,3 +530,87 @@ right:4%;
 .table th, .table td {
 text-align:right;
 }
+.panel-heading{
+    color: white;
+    background-color: rgb(211, 103, 168);
+background-image: url(../img/body-bg.png);
+width: 100%;
+margin-bottom: 20px;
+overflow: visible;
+background-repeat: repeat repeat;
+}
+.panel-title a {
+    color: white;
+}
+.panel-title h4 {
+    display: inline-block;
+    color: white;
+}
+.panel-title {
+        color: white;
+height: 40px;
+padding-right: 20px;
+padding-left: 20px;
+background: url(../img/bottom-area-bg.png) repeat-x bottom left;
+}
+.inner {
+    width: 100%;
+}
+.menu-button{
+   display: inline-block;
+box-shadow: 1px 1px 2px rgb(8, 9, 9);
+padding-left: 5px;
+padding-right: 5px;
+
+height:35px;
+background-color: rgba(0, 0, 0, 0.1);
+font-size: 70%;
+text-align: center;
+line-height: 1px;
+padding: 4px;
+padding-bottom: 0px;
+margin-left: 5%;
+margin-right: 5%;
+}
+.menu-button i{
+   padding-bottom: 4px;
+   font-size: 200%; 
+   display: block;
+}
+.menu-button a {
+color: white;
+text-decoration: none;
+}
+.section-header h4{
+    color: white;
+    display: inline-block;
+    padding:  4px;
+}
+
+.accordion {
+    background-color: white;
+    width: 100%;
+}
+
+.summery{
+    display: inline-block;
+    
+}
+.bottom-out {
+     -webkit-transition: 0.6s ease-in-out top;
+     -moz-transition: 0.6s ease-in-out top;
+       -o-transition: 0.6s ease-in-out top;
+          transition: 0.6s ease-in-out top;
+         display: none;
+         
+         
+          
+}
+#accordion{
+    overflow: no-display;
+}
+
+h3 input[type="radio"] {
+    margin-right: 4px;
+    margin-left: 4px;
+}

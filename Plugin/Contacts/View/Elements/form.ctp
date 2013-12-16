@@ -96,7 +96,7 @@ $origfieldset = array(
 'id'=> array("type"=>"hidden"),
 'last'=> array('title'=>__('Last Name',true)),
 'address'=>array('type'=>'textarea','rows'=>1,'cols'=>16,'title'=>__('House No. and Street',true)),
-'city_id'=>array('type'=>'select',"empty"=>__("Select")." ".__("City",true),'label'=>false,'options'=>$cities),
+'city_id'=>array('type'=>'select',"empty"=>__("Select")." ".__("City",true),'label'=>false,'options'=>$cities,'value'=>$default_city),
 'postcode'=>array("type"=>"hidden"),
 'phone'=>array('type'=>'tel'),
 'cellphone'=>array('type'=>'tel','placeholder'=>__("Cellphone"),'label'=>false),
@@ -135,10 +135,11 @@ if(!isset($fieldset)){
 	    break;
     case 'parent':
     	$fieldset=array(
+        'address'=>array('label'=>false,'rows'=>2,'cols'=>17,'placeholder'=>__("Home Address")),
 		'image'=>array('type'=>'hidden'),
         'gender'=>array('type'=>'hidden'),
 		'birth_date'=>array('type'=>'hidden'),
-		'phone'=>array('type'=>'hidden'),
+		'phone'=>array('label'=>false,'placeholder'=>__("Home Phone")),
 		'name'=>array('placeholder'=>__("Parent Name"),'label'=>false));
 	    break;
 	case 'staff':
@@ -169,11 +170,11 @@ if(!isset($fieldset)){
 	case 'child-member':
 			// echo $this->Form->input('Family.group_id',array('type' => 'hidden'));
 			$fieldset=array(
-				'address'=>array('label'=>false,'rows'=>2,'cols'=>17,'placeholder'=>__("Home Address")),
                 'cellphone'=>array('type'=>'hidden','required'=>false),
+                'phone'=>array('type'=>'hidden'),
+                'address'=>array('type'=>'hidden'),
                 'email'=>array('type'=>'hidden','required'=>false),
-                 'name'=>array('placeholder'=>__('Child Name'),'label'=>false),
-				'phone'=>array('label'=>false,'placeholder'=>__("Home Phone")));
+                 'name'=>array('placeholder'=>__('Child Name'),'label'=>false));
 	break;
 	case 'child-member-no-parent':
 		$fieldset=array(

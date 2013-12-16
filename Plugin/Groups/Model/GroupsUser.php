@@ -12,15 +12,33 @@ App::uses('UsersAppModel', 'Users.Model');
  * @author   Fahad Ibnay Heylaal <contact@fahad19.com>
  * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link     http://www.croogo.org
+ * functions:
+ isContactInGroup
+ getUserRoleInGroup
+ getUserByMemberType
+ getUserByUserRole
+ getUserGroupByGroupandRole
+ getGroupsByUser
+ getGroupsByUsername
+ getContactsByuser
+ getGroupsByUsername
+ getContactsByrelationUser
+ check_duplicate_member
+ get_members_id_by_status
+ get_members_by_group
+ deleteByMemeber
+ activateMember
+ setGU
  */
 class GroupsUser extends GroupsAppModel {
-	public $actsAs = array(
+    public $actsAs = array(
 			'Search.Searchable',
 			'Croogo.Cached' => array(
-					'groups' => array(
-							'group',
-					),
+			'groups' => array(
+				'groups',
 			),
+            ),
+
 	);
 	
 	public $belongsTo = array(
@@ -35,9 +53,53 @@ class GroupsUser extends GroupsAppModel {
  * @param $userId integer user id
  * @return array array of Role Aro Ids
  */
+public function beforeSave($options){
+  
+          if(isset($this->data['GroupsUser']['user_id'])&&
+    isset($this->data['GroupsUser']['group_id'])&&
+    isset($this->data['GroupsUser']['member_id'])){
+            $gu=$this->find('first',array('conditions'=>array(
+            'GroupsUser.user_id'=>$this->data['GroupsUser']['user_id'],
+            'GroupsUser.group_id'=>$this->data['GroupsUser']['group_id'],
+            'GroupsUser.member_id'=>$this->data['GroupsUser']['member_id'],
+            )));
+            
+            if ($gu) { $this->id=$this->data['GroupsUser']['id']=$gu['GroupsUser']['id'];return false;} //no need to save
+    }
+	parent::beforeSave($options);
+    }
 public function afterSave($create){
-	
+         App::import( 'CakeSession');
+
+        $group=CakeSession::check('Group.Group');
+         if( $group){
+
+			$group=CakeSession::read('Group.Group');
+            //foreach role of group need to makey it dynamic foreach role in the role table
+            Cache::delete('element_mem_list1_4_'.$group,'groups_view');
+
+    		Cache::delete('element_mem_list2_4_'.$group,'groups_view');
+             Cache::delete('element_mem_list1_5_'.$group,'groups_view');
+
+    		Cache::delete('element_mem_list2_5_'.$group,'groups_view');
+             Cache::delete('element_mem_list1_6_'.$group,'groups_view');
+
+    		Cache::delete('element_mem_list2_6_'.$group,'groups_view');
+
+         }
+     
 	return $this->User->afterUserwasAddedToGroup($this->Group->id);
+}
+public function isContactInGroup($group_id,$contact_id){
+    $sql='SELECT GroupsUser.*
+FROM groups_users GroupsUser
+INNER JOIN members m ON m.id = GroupsUser.member_id
+WHERE m.contact_id ='.$contact_id .' and GroupsUser.group_id='.$group_id;
+ $return=$this->query($sql);
+ 
+   return $return[0];
+    
+   
 }
 public function getUserRoleInGroup($user_id,$group_id){
 	$this->recursive=0;
@@ -45,6 +107,9 @@ public function getUserRoleInGroup($user_id,$group_id){
 	$return=$this->find('first',array(
 			'conditions'=>array('GroupsUser.group_id'=>$group_id,'GroupsUser.user_id'=>$user_id),
 			'fields'=>array('GroupsUser.role_id'),
+            'cache' => array(
+				'name' => 'roleingroup'.$user_id.$group_id,
+				'config' => 'croogo_groups',)
 			));
           
 	if ($return)
@@ -70,7 +135,7 @@ public function getUserByUserRole($group_id,$role_id=5,$limit=1){
 				'fields'=>"User.*"));
 		return $return;
 	}
-	public function getUserGroupByGroupandRole($group_id,$role_id=5,$limit=1,$recursive=-1,$fields="GroupsUser.*"){
+public function getUserGroupByGroupandRole($group_id,$role_id=5,$limit=1,$recursive=-1,$fields="GroupsUser.*"){
 		$this->recursive=$recursive;
 		$all= ($limit==1) ? 'first':'all';
 		$return=$this->find($all,array(
@@ -80,17 +145,29 @@ public function getUserByUserRole($group_id,$role_id=5,$limit=1){
 				'fields'=>$fields));
 		return $return;
 	}
+    function getGUByUserContactIDGroup($contact_id,$group_id=null){
+	$select=($group_id==null)? "": " and GU.group_id=".$group_id;
+	
+	
+	$query=	"select GU.*,User.id from groups_users as GU
+			right join users as User on GU.user_id=User.id 
+			where User.contact_id=".$contact_id.$select;
+	return $this->query($query);
+}
 public function getGroupsByUser($user_id) {
 	$this->recursive=0;
 		$groups = $this->find('all',array(
 				'conditions' => array('GroupsUser.user_id = '.$user_id),
 				'fields'=>array('GroupsUser.group_id','Group.name'),
 				'group'=>array('GroupsUser.group_id'),
-				'cached'
+				 'cache' => array(
+				'name' => 'usersgroups'.$user_id,
+				'config' => 'croogo_groups',
+			),
 		));
 		return $groups;
 	}
-	public function getGroupsByUsername($user_name) {
+public function getGroupsByUsername($user_name) {
 		$groups = $this->find('first',array(
 				'conditions' => array('User.username'=>$user_name),
 				'fields'=>array('GroupsUser.group_id','Group.name'),
@@ -231,6 +308,7 @@ public function getGroupsByUser($user_id) {
 				where GU.group_id='.$group_id.' and Member.member_type="child-member"'.$order;
 
 		$members=$this->query($query);
+        
 		$i=0;
 		$sec_row=false;
 		$return=array();
@@ -279,4 +357,54 @@ function activateMember($member_id,$user_id){
 		}
 		if($gu['Member']['member_type']=='child-member') return 'child-member'; else return 'staff';
 	}
+function setGU($temp){
+  //  exit;
+      
+        $data['GroupsUser'][0] =$temp['GroupsUser'];
+        unset($data['GroupsUser'][0]['Member']);
+        //unset  ($data['GroupsUser']);
+        if(empty($temp['user_id'])){
+            $user=$this->User->findByContactId($temp['Contact']['id']);
+           
+            if ($user) $data['GroupsUser'][0]['user_id'] = $user['User']['id'];
+            else 
+                $data['GroupsUser'][0]['User']['contact_id']=$temp['Contact']['id'];
+
+}
+             if(isset ($temp['ContactsRelation'])){
+                    //first parent
+                    $user=$this->User->findByContactId($temp['ContactsRelation'][0]['related_contact_id']);
+                    if($user) $data['GroupsUser'][1]['user_id'] = $user['User']['id'];
+                    else {
+                      $data['GroupsUser'][1]['User']['contact_id']=$temp['ContactsRelation'][0]['related_contact_id'];
+                   //the rest of the user info from contact is done in beforesave in User class
+                    }
+                   $data['GroupsUser'][1]['member_id']=$temp['GroupsUser']['member_id'];
+                   $data['GroupsUser'][1]['group_id']=$temp['GroupsUser']['group_id'];
+                   $data['GroupsUser'][1]['role_id']=0;
+                   $data['GroupsUser'][1]['activation_key']=$temp['GroupsUser']['Member']['activation_key'].'_1';
+                   //second parent
+                   if(isset ($temp['ContactsRelation'][1])){
+                        $user=$this->User->findByContactId($temp['ContactsRelation'][1]['related_contact_id']);
+                        if($user) $data['GroupsUser'][2]['user_id'] = $user['User']['id'];
+                        else
+                        $data['GroupsUser'][2]['User']['contact_id']=$temp['ContactsRelation'][1]['related_contact_id'];
+                        $data['GroupsUser'][2]['member_id']=$temp['GroupsUser']['member_id'];
+                       $data['GroupsUser'][2]['group_id']=$temp['GroupsUser']['group_id'];
+                       $data['GroupsUser'][2]['role_id']=0;
+                       $data['GroupsUser'][2]['activation_key']=$temp['GroupsUser']['Member']['activation_key'].'_2';   
+            
+                    }
+             }
+                       $return= $this->saveAll($data['GroupsUser'],array('deep'=>true)) ;  
+                       if ($return) {
+                            Cache::delete('element_mem_list1_'.$group,'groups_view');
+    			            Cache::delete('element_mem_list2_'.$group,'groups_view');
+                            return $data;} 
+                       else return FALSE;
+           
+        }
+        
+
+   
 }

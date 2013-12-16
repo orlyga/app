@@ -126,4 +126,72 @@ public function getMembersByRole($group_id,$role) {
 			));
 	return $member;
 }
+
+ /*
+    expects:
+    $data['GroupsUser']['Member']
+                    ['Contact']
+                            >'id'
+                            >rest of contact info - if contact was changed
+                    ['member_type']
+    ['ContactsRelation'][0]
+            ['Parent']
+    ['ContactsRelation'][1]
+            ['Parent']
+    ['Contact']  
+    if contact exists allows to change infomration - like if a new photo was uploaded
+    saves contact relation info 
+    */
+public function save_member($data_mem){
+    
+    	  	//update existing contact information of parent or adult member
+    	  	if(!empty($data_mem['Contact']['id'])){
+    			$this->Contact->id=$data_mem['Contact']['id'];
+                //set parents contact id for finding their users later on
+                $parents=$this->Contact->ContactsRelation->getContactsOfRelatedByContactId($data_mem['Contact']['id']);
+    			if($parents){
+                     $data_mem['ContactsRelation'][0]['related_contact_id']  = $parents[0]['Parent']['id'];
+    			        if ( $parents[1])
+                         $data_mem['ContactsRelation'][1]['related_contact_id']  = $parents[1]['Parent']['id'];
+
+                }
+               if(!empty($data_mem['Contact']['name'])){
+                        if(!$this->Contact->save($data_mem['Contact'])) {
+    				        $err=$this->Contact->getError();
+    				        //$this->Session->setFlash(__($err));
+    				        return false;
+    			        }
+    	  	        }
+            }
+            //contact's parent are new in the system
+    	    if (isset($data_mem['ContactsRelation'][0]['parent']['name'])){
+                $data_mem['ContactsRelation'][0]['Contact']=$data_mem['Contact'];
+                 if (isset($data_mem['ContactsRelation'][1]))
+                    $data_mem['ContactsRelation'][1]['Contact']=$data_mem['Contact'];
+               
+                 $data_mem['ContactsRelation']=  $this->Contact->ContactsRelation->setContactRelations($data_mem['ContactsRelation']);
+                               if (! $data_mem['ContactsRelation']) return FALSE;
+                  $data_mem['GroupsUser']['Member']['contact_id']=$data_mem['ContactsRelation'][0]['Contact']['id'];
+            }
+            $contact_id=isset($data_mem['ContactsRelation'][0]['Contact']['id'])? $data_mem['ContactsRelation'][0]['Contact']['id']:$data_mem['Contact']['id'];
+           //if record for this contact (this is the member's contact) then create one, else no need to add
+            $gu=$this->GroupsUser->isContactInGroup($data_mem['GroupsUser']['group_id'],$contact_id);
+       if(!$gu) {$data_mem['GroupsUser']['Member']['contact_id']=$contact_id;
+                $gu=$this->save($data_mem['GroupsUser']['Member']);
+               $data_mem['GroupsUser']['member_id']=$this->getInsertId();
+              unset($data_mem['GroupsUser']['Member']);
+              return $data_mem;
+       }
+         //   echo "hi";
+         
+         else{
+            
+            $data_mem['GroupsUser']['member_id'] = $gu['GroupsUser']['member_id'];
+            return $data_mem;
+           // exit;
+           // return $this->getInsertId();
+            //create users ang GU for new member
+           // $this->User->
+            }
+}
 }

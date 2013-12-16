@@ -1,23 +1,23 @@
 <script>
 $(function(){
 var name = $("#anc2").attr("href");
-name=$(name).find(".name").html();
+name=$(name).find(".contact_child_name").html();
 var n=name.indexOf("</span>")+10;
 name1=name.substr(n,1);
-$("#anc1").html('×�-'+name1);
+$("#anc1").html('א-'+name1);
  name = $("#anc3").attr("href");
-name=$(name).find(".name").html();
+name=$(name).find(".contact_child_name").html();
  n=name.indexOf("</span>")+10;
 name2=name.substr(n,1);
 $("#anc2").html(name1+'-'+name2);
 
      name = $("#anc4").attr("href");
-name=$(name).find(".name").html();
+name=$(name).find(".contact_child_name").html();
  n=name.indexOf("</span>")+10;
 name3=name.substr(n,1);
 $("#anc3").html(name2+'-'+name3);
 
-$("#anc4").html(name3+'-×ª');
+$("#anc4").html(name3+'-ת');
 });
 </script>
 <?php 

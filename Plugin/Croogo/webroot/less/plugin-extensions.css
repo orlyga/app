@@ -1,0 +1,18 @@
+div.extensions-themes .current-theme .screenshot {
+  float: left;
+}
+div.extensions-themes .available-themes {
+  border-top: 1px dashed #ccc;
+  margin: 50px 0px 0px 0px;
+}
+div.extensions-themes .available-themes ul {
+  margin: 0;
+}
+div.extensions-themes .available-themes ul li {
+  margin-left: 0;
+  margin-bottom: 20px;
+  list-style: none;
+}
+div.extensions-themes .available-themes .actions a {
+  margin-right: 10px;
+}

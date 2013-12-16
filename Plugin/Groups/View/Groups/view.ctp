@@ -67,7 +67,7 @@ EOT;
 ?>
 <div class='row-fluid '>
 	<div class='pull-left-rtl span5'>
-		 	<h3><?php echo $group['Group']['name'];?>
+		 	<h3><?php echo $group['Group']['name'];?></h3>
 	</div>
 	<div id='general-info' class='pull-right-rtl span5' style="margin: 1% 5%">
 		<table class="table no-marginpadding">

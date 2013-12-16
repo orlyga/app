@@ -75,8 +75,8 @@ $fieldset_child=array('name'=>array('class'=>'hide'),
 		<td class="child_name" ><div class="mem_tab name"><?php echo "<span>";
 			if($member['Contact']['gender']>1) echo "<i class='icon-female medium'></i>";
 			if($member['Contact']['gender']==1) echo "<i class='icon-male medium'></i>";
-			echo "</span>"; ?>
-			<?php echo $member['Contact']['name']." ". $member['Contact']['last'] ?></div>
+			echo "</span><span class='contact_child_name'>"; ?>
+			<?php echo $member['Contact']['name']." ". $member['Contact']['last'] ?></span></div>
 			<?php if(isset($member['Contact']['birth_date'] )){
 							$member['Contact']['birth_date']= date('d.m.Y', strtotime($member['Contact']['birth_date']));
 							echo '<span class="birth_date_list" style="font-size:80%">';

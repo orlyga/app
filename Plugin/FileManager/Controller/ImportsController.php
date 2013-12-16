@@ -198,7 +198,9 @@ class ImportsController extends FileManagerAppController {
 			return  "<b>: שורה ".$i." </b> ".$err;
 		}
 		//send letter
+		if (($email<>"") && $email_sec<>"") $email=array($email,$email_sec);
 		if (($email=="") && $email_sec<>"") $email=$email_sec;
+		
 		if ($email<>""){
 			if($this->sendmail){
 			

@@ -32,7 +32,7 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-define('HOST_NAME', 'http://be-member.ccc-cloud.com/');
+define('HOST_NAME', 'http://be-member.com/');
 Configure::write('debug', 2);
 
 /**
@@ -117,7 +117,7 @@ Configure::write('Routing.prefixes', array('admin'));
  * Turn off all caching application-wide.
  *
  */
-Configure::write('Cache.disable', true);
+Configure::write('Cache.disable', false);
 
 /**
  * Enable cache checking.
@@ -128,7 +128,7 @@ Configure::write('Cache.disable', true);
  * or in each action using $this->cacheAction = true.
  *
  */
-Configure::write('Cache.check', false);
+Configure::write('Cache.check', true);
 
 /**
  * Defines the default error type when using the log() function. Used for

@@ -62,26 +62,10 @@ if ($theme = Configure::read('Site.theme')) {
  */
 
 Configure::write('Core.corePlugins', array(
-	'Settings', 'Acl', 'Blocks', 'Comments', 'Contacts', 'Menus', 'Meta',
+	'Settings', 'Acl', 'Contacts', 'Meta',
 	'Nodes', 'Taxonomy', 'Users','Groups'
 ));
-Croogo::mergeConfig('Wysiwyg.actions', array(
-'Groups/Groups/add' => array(
-array(
-'elements' => 'Stam',
-'preset' => 'basic',
 
-),
-
-),
-'Groups/Groups/invite' => array(
-array(
-'elements' => 'ImportMessage',
-'preset' => 'basic',
-
-),
-),
-));
 /**
  * Plugins
  */
